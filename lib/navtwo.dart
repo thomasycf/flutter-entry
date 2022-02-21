@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_flutter/router/delegate_parser.dart';
+import 'package:my_flutter/router/root_router_delegate.dart';
 
 class MyPage extends Page {
   final String title;
@@ -18,38 +20,22 @@ class MyPage extends Page {
 
 
 class NavTwo extends StatefulWidget {
-  const NavTwo({Key? key}) : super(key: key);
+  //const NavTwo({Key? key}) : super(key: key);
   @override
   _NavTwoState createState() => _NavTwoState();
 }
 
 class _NavTwoState extends State<NavTwo> {
-
-  final pages = [
-    Page(
-
-    ),
-
-    MyPage(
-      key: Key('/'),
-      name: '/',
-      builder: (context) => HomeScreen(),
-    ),
-    MyPage(
-      key: Key('/category/5'),
-      name: '/category/5',
-      builder: (context) => CategoryScreen(id: 5),
-    ),
-    MyPage(
-      key: Key('/item/15'),
-      name: '/item/15',
-      builder: (context) => ItemScreen(id: 15),
-    ),
-  ];
-
+  final delegate = RootRouterDelegate();
+  final parser = DelegateParser();
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+       // theme: basicTheme(),
+        routeInformationParser: parser,
+        routerDelegate: delegate
+    );
   }
 }
