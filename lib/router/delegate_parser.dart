@@ -26,6 +26,8 @@ class DelegateParser extends RouteInformationParser<PageConfiguration> {
         return MainLayoutPageConfig;
       // case MainLayoutPath:
       //   return MainLayoutPageConfig;
+      case "msgPage":
+        return MsgPageConfig;
       case EditVideoPath:
         return EditVideoPageConfig;
       case ChatPath:

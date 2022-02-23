@@ -19,6 +19,7 @@ class _MainLayoutState extends State<MainLayout> {
   _getRouter( BuildContext cxt){
      RootRouterDelegate router = RootRouterDelegate.of(cxt);
     print("nav router tag = ${router.tag}");
+   router.push(MsgPageConfig);
   }
 
   @override
@@ -28,12 +29,41 @@ class _MainLayoutState extends State<MainLayout> {
       body: Column(
       children: [
         Text("this is scaffold body"),
-        TextButton(onPressed: ()=>_getRouter(context), child: Text("get Nav2.0 router"))
+        TextButton(onPressed: ()=>_getRouter(context), child: Text("open msgPage"))
       ],
       ),
     );
   }
 }
+
+class MsgPage extends StatefulWidget {
+  //const MsgPage({Key? key}) : super(key: key);
+
+  @override
+  _MsgPageState createState() => _MsgPageState();
+}
+
+class _MsgPageState extends State<MsgPage> {
+
+  _getRouter( BuildContext cxt){
+    RootRouterDelegate router = RootRouterDelegate.of(cxt);
+    print("nav router tag = ${router.tag}");
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("this is MsgPage"),),
+      body: Column(
+        children: [
+          Text("this is scaffold body"),
+          TextButton(onPressed: ()=>_getRouter(context), child: Text("get Nav2.0 router"))
+        ],
+      ),
+    );
+  }
+}
+
 
 
 class RootRouterDelegate extends RouterDelegate<PageConfiguration>
@@ -50,14 +80,26 @@ with ChangeNotifier, PopNavigatorRouterDelegateMixin<PageConfiguration>{
   final  GlobalKey<NavigatorState> _rootNavKey =  GlobalKey<NavigatorState>();
   List<MaterialPage> get pages => List.unmodifiable(_pages);
 
+Future<bool> _onPop()async{
+  if (kDebugMode) {
+    print("pppppppppppppppppppppppppppppp");
+  }else{
+    print("pppppppppppppppppppppppppppppp");
+  }
+
+  return true;
+}
 
   @override
   Widget build(BuildContext context) {
     print("Flutter router build called");
-    return Navigator(
-    //  key: _rootNavKey,//navigatorKey,
-      onPopPage: _onPopPage,
-      pages: List.of(_pages),
+    return WillPopScope(
+      onWillPop: _onPop,
+      child: Navigator(
+      //  key: _rootNavKey,//navigatorKey,
+         onPopPage: _onPopPage,
+        pages: List.of(_pages),
+      ),
     );
   }
 
@@ -74,7 +116,9 @@ with ChangeNotifier, PopNavigatorRouterDelegateMixin<PageConfiguration>{
   }
 
   bool _onPopPage(Route<dynamic> route, result) {
-    print('$tag _onPopPage...');
+    if (kDebugMode) {
+      print('$tag _onPopPage...');
+    }
     print('$tag _onPopPage route = $route');
 
     print('$tag _onPopPage _pages = $_pages');
@@ -140,6 +184,9 @@ with ChangeNotifier, PopNavigatorRouterDelegateMixin<PageConfiguration>{
          case Pages.MainLayout:
            _addPageData(MainLayout(), MainLayoutPageConfig);
            break;
+        case Pages.Msg:
+          _addPageData(MsgPage(), MsgPageConfig);
+          break;
        //  case Pages.EditVideo:
        //    _addPageData(MyVideosPage(), EditVideoPageConfig);
        //    break;
